@@ -19,4 +19,15 @@ If everything runs fine you can access the web ui on the address:
 - localhost:32400/web OR
 - YOUR_COMPUTER_IP:32400/web
 
+## Adding a new library
+
+To add a new library inside de container, you can add mapped volumes on docker-compose.yml file like this:
+
+```yaml
+volumes:
+    - <local_tvshows_folder>:/tvshows
+    - <local_movies_folder>:/movies
+    - <local_music_folder>:/music
+```
+
 [Plex Site]: https://plex.tv
