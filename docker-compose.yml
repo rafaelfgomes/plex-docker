@@ -1,0 +1,16 @@
+services:
+  plex-media-server:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex-media-server
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - VERSION=docker
+      - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #Log on your plex account and generate one in plex.tv/claim
+    volumes:
+      - ./config:/config
+    network_mode: host
+    devices:
+      - /dev/dri:/dev/dri #needed if you want hardware transcode
+    restart: unless-stopped
