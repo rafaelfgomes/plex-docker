@@ -9,7 +9,7 @@ services:
       - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #Log on your plex account and generate one in plex.tv/claim
     volumes:
-      - ./config:/config
+      - config:/config
       - ${TVSHOWS_FOLDER}:/tvshows
       - ${MOVIES_FOLDER}:/movies
       - ${ANIMES_FOLDER}:/animes
@@ -17,3 +17,7 @@ services:
     devices:
       - /dev/dri:/dev/dri #needed if you want hardware transcode
     restart: unless-stopped
+
+volumes:
+  config:
+    name: plex-configs
