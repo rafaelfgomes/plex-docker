@@ -10,6 +10,8 @@ services:
       - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #Log on your plex account and generate one in plex.tv/claim
     volumes:
       - config:/config
+      - transcodes:/transcodes
+      - temp:/temp
       - ${TVSHOWS_FOLDER}:/tvshows
       - ${MOVIES_FOLDER}:/movies
       - ${ANIMES_FOLDER}:/animes
@@ -21,3 +23,7 @@ services:
 volumes:
   config:
     name: plex-configs
+  transcodes:
+    name: plex-transcodes
+  temp:
+    name: plex-temp
