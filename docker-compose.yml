@@ -16,8 +16,9 @@ services:
       - ${MOVIES_FOLDER}:/movies
       - ${ANIMES_FOLDER}:/animes
     network_mode: host
-    devices:
-      - /dev/dri:/dev/dri #needed if you want hardware transcode
+    devices:  #needed if you want hardware transcode
+      - /dev/dri/card0:/dev/dri/card0
+      - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
 
 volumes:
