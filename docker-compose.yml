@@ -2,6 +2,7 @@ services:
   plex-media-server:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex-media-server
+    hostname: plex-media-server
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -9,22 +10,19 @@ services:
       - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #Log on your plex account and generate one in plex.tv/claim
     volumes:
-      - config:/config
-      - transcodes:/transcodes
-      - temp:/temp
-      - ${TVSHOWS_FOLDER}:/tvshows
-      - ${MOVIES_FOLDER}:/movies
-      - ${ANIMES_FOLDER}:/animes
+      - ${CONFIG_FOLDER:-./config}:/config
+      - ${TRANSCODE_FOLDER:-./transcodes}:/transcodes
+      - ${DOWNLOADS_FOLDER:-./downloads}:/downloads
+      - ${TVSHOWS_FOLDER}:/tvshows:ro
+      - ${MOVIES_FOLDER}:/movies:ro
+      - ${ANIMES_FOLDER}:/animes:ro
     network_mode: host
     devices:  #needed if you want hardware transcode
       - /dev/dri/card0:/dev/dri/card0
       - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
-
-volumes:
-  config:
-    name: plex-configs
-  transcodes:
-    name: plex-transcodes
-  temp:
-    name: plex-temp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:32400/web"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
