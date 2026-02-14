@@ -1,6 +1,6 @@
 services:
   plex-media-server:
-    image: lscr.io/linuxserver/plex:latest
+    image: lscr.io/linuxserver/plex
     container_name: plex-media-server
     hostname: plex-media-server
     environment:
@@ -16,13 +16,19 @@ services:
       - ${TVSHOWS_FOLDER}:/tvshows:ro
       - ${MOVIES_FOLDER}:/movies:ro
       - ${ANIMES_FOLDER}:/animes:ro
-    network_mode: host
     devices:  #needed if you want hardware transcode
-      - /dev/dri/card0:/dev/dri/card0
-      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri:/dev/dri
     restart: unless-stopped
+    networks:
+      external:
+        ipv4_address: ${PLEX_IP}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:32400/web"]
       interval: 30s
       timeout: 10s
       retries: 5
+
+networks:
+  external:
+    external: true
+    name: ${EXTERNAL_NETWORK_NAME}
