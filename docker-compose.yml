@@ -1,13 +1,12 @@
 services:
   plex-media-server:
-    image: lscr.io/linuxserver/plex
+    image: plexinc/pms-docker
     container_name: plex-media-server
     hostname: plex-media-server
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PLEX_UID=${PUID}
+      - PLEX_GID=${PGID}
       - TZ=${TIMEZONE}
-      - VERSION=docker
       - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #Log on your plex account and generate one in plex.tv/claim
     volumes:
       - ${CONFIG_FOLDER:-./config}:/config
@@ -17,16 +16,11 @@ services:
       - ${MOVIES_FOLDER}:/movies:ro
       - ${ANIMES_FOLDER}:/animes:ro
     devices:  #needed if you want hardware transcode
-      - /dev/dri:/dev/dri
+      - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
     networks:
       external:
         ipv4_address: ${PLEX_IP}
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:32400/web"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
 networks:
   external:
