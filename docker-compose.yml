@@ -40,7 +40,7 @@ services:
     command: watch
     volumes:
       - ${PLEXTRAKTSYNC_CONFIG_FOLDER:-./config}:/app/config
-      - ./plex-trakt-sync/servers.yaml:/app/servers.yaml:ro
+      - ./plex-trakt-sync/servers.yml:/app/config/servers.yml:ro
     restart: unless-stopped
 
 networks:
