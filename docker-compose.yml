@@ -49,7 +49,7 @@ services:
       - PLEX_TOKEN=${PLEX_CLAIM_TOKEN}
     volumes:
       - ${PLEXTRAKTSYNC_CONFIG_FOLDER:-./config}:/app/config
-      - ./plex-trakt-sync/servers.yml:/app/config/servers.yml:ro
+      - ./plex-trakt-sync/servers.yml:/app/config/servers.yml
     restart: unless-stopped
     networks:
       local:
