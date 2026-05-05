@@ -1,8 +1,8 @@
 servers:
-  plex:
+  plex-media-server:
     token: ~
     urls:
-      - http://${PLEX_LOCAL_IP}:32400
+      - http://$PLEX_LOCAL_IP:32400
     config:
       libraries:
         - "Seriados"

@@ -8,7 +8,6 @@ services:
       - PLEX_GID=${PGID}
       - TZ=${TIMEZONE}
       - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #Log on your plex account and generate one in plex.tv/claim
-      - PLEX_LOCAL_IP=${PLEX_IP}
     volumes:
       - ${PLEX_CONFIG_FOLDER:-./config}:/config
       - ${PLEX_TRANSCODE_FOLDER:-./transcodes}:/transcodes
@@ -20,8 +19,10 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
     networks:
+      local:
       external:
         ipv4_address: ${PLEX_IP}
+
   scheduler:
     image: mcuadros/ofelia:0.3
     container_name: scheduler
@@ -34,16 +35,25 @@ services:
       ofelia.job-exec.plextraktsync.schedule: "@every 2h"
       ofelia.job-exec.plextraktsync.container: "plextraktsync"
       ofelia.job-exec.plextraktsync.command: "plextraktsync sync"
+    networks:
+      local:
+
   plextraktsync:
     image: ghcr.io/taxel/plextraktsync:latest
     container_name: plextraktsync
     command: watch
+    environment:
+      - PLEX_LOCAL_IP=${PLEX_IP}
     volumes:
       - ${PLEXTRAKTSYNC_CONFIG_FOLDER:-./config}:/app/config
       - ./plex-trakt-sync/servers.yml:/app/config/servers.yml:ro
     restart: unless-stopped
+    networks:
+      local:
 
 networks:
+  local:
+    name: plex-local-network
   external:
     external: true
     name: ${EXTERNAL_NETWORK_NAME}
