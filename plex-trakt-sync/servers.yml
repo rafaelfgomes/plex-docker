@@ -1,5 +1,5 @@
 servers:
-  Example1:
+  plex:
     token: ~
     urls:
       - http://${PLEX_LOCAL_IP}:32400
@@ -8,3 +8,10 @@ servers:
         - "Seriados"
         - "Filmes"
         - "Animes"
+      sync:
+        plex_to_trakt:
+          ratings: true
+          watched_status: true
+        trakt_to_plex:
+          ratings: true
+          watched_status: true
