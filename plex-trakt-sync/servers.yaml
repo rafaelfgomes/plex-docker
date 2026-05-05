@@ -1,0 +1,10 @@
+servers:
+  Example1:
+    token: ~
+    urls:
+      - http://${PLEX_LOCAL_IP}:32400
+    config:
+      libraries:
+        - "Seriados"
+        - "Filmes"
+        - "Animes"

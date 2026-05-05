@@ -8,10 +8,11 @@ services:
       - PLEX_GID=${PGID}
       - TZ=${TIMEZONE}
       - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #Log on your plex account and generate one in plex.tv/claim
+      - PLEX_LOCAL_IP=${PLEX_IP}
     volumes:
-      - ${CONFIG_FOLDER:-./config}:/config
-      - ${TRANSCODE_FOLDER:-./transcodes}:/transcodes
-      - ${DOWNLOADS_FOLDER:-./downloads}:/downloads
+      - ${PLEX_CONFIG_FOLDER:-./config}:/config
+      - ${PLEX_TRANSCODE_FOLDER:-./transcodes}:/transcodes
+      - ${PLEX_DOWNLOADS_FOLDER:-./downloads}:/downloads
       - ${TVSHOWS_FOLDER}:/tvshows:ro
       - ${MOVIES_FOLDER}:/movies:ro
       - ${ANIMES_FOLDER}:/animes:ro
@@ -38,7 +39,9 @@ services:
     container_name: plextraktsync
     command: watch
     volumes:
-      - ./config:/app/config
+      - ${PLEXTRAKTSYNC_CONFIG_FOLDER:-./config}:/app/config
+      - ./plex-trakt-sync/servers.yaml:/app/servers.yaml:ro
+    restart: unless-stopped
 
 networks:
   external:
