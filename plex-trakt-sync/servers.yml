@@ -2,7 +2,7 @@ servers:
   default:
     token: ~
     urls:
-      - http://$PLEX_LOCAL_IP:32400
+      - http://192.168.10.108:32400
     config:
       libraries:
         - "Seriados"

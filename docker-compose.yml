@@ -42,8 +42,6 @@ services:
     image: ghcr.io/taxel/plextraktsync:latest
     container_name: plextraktsync
     command: watch
-    environment:
-      - PLEX_LOCAL_IP=${PLEX_IP}
     volumes:
       - ${PLEXTRAKTSYNC_CONFIG_FOLDER:-./config}:/app/config
       - ./plex-trakt-sync/servers.yml:/app/config/servers.yml:ro
