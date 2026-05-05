@@ -1,8 +1,8 @@
 servers:
   default:
-    token: ~
+    token: ${PLEX_TOKEN}
     urls:
-      - http://plex-media-server:32400
+      - http://${PLEX_IP}:32400
     config:
       libraries:
         - "Seriados"

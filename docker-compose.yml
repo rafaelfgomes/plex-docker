@@ -39,9 +39,17 @@ services:
 
   plextraktsync:
     image: ghcr.io/taxel/plextraktsync:latest
+    command: sync
     container_name: plextraktsync
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - PLEX_IP=plex-media-server
+      - PLEX_TOKEN=${PLEX_CLAIM_TOKEN}
     volumes:
       - ${PLEXTRAKTSYNC_CONFIG_FOLDER:-./config}:/app/config
+      - ./plex-trakt-sync/servers.yml:/app/config/servers.yml:ro
     restart: unless-stopped
     networks:
       local:
