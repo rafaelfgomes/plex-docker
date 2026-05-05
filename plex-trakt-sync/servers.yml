@@ -1,5 +1,5 @@
 servers:
-  plex:
+  default:
     token: ~
     urls:
       - http://$PLEX_LOCAL_IP:32400

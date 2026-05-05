@@ -34,17 +34,16 @@ services:
     labels:
       ofelia.job-exec.plextraktsync.schedule: "@every 2h"
       ofelia.job-exec.plextraktsync.container: "plextraktsync"
-      ofelia.job-exec.plextraktsync.command: "plextraktsync --server 'plex' sync"
+      ofelia.job-exec.plextraktsync.command: "plextraktsync sync"
     networks:
       local:
 
   plextraktsync:
     image: ghcr.io/taxel/plextraktsync:latest
     container_name: plextraktsync
-    command: --server 'plex' watch
+    command: watch
     environment:
       - PLEX_LOCAL_IP=${PLEX_IP}
-      - PLEX_SERVER=plex
     volumes:
       - ${PLEXTRAKTSYNC_CONFIG_FOLDER:-./config}:/app/config
       - ./plex-trakt-sync/servers.yml:/app/config/servers.yml:ro
