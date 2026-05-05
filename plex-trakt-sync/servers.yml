@@ -1,5 +1,5 @@
 servers:
-  plex-media-server:
+  plex:
     token: ~
     urls:
       - http://$PLEX_LOCAL_IP:32400
