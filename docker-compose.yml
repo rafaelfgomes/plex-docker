@@ -21,6 +21,24 @@ services:
     networks:
       external:
         ipv4_address: ${PLEX_IP}
+  scheduler:
+    image: mcuadros/ofelia:0.3
+    container_name: scheduler
+    depends_on:
+      - plextraktsync
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      ofelia.job-exec.plextraktsync.schedule: "@every 2h"
+      ofelia.job-exec.plextraktsync.container: "plextraktsync"
+      ofelia.job-exec.plextraktsync.command: "plextraktsync sync"
+  plextraktsync:
+    image: ghcr.io/taxel/plextraktsync:latest
+    container_name: plextraktsync
+    command: watch
+    volumes:
+      - ./config:/app/config
 
 networks:
   external:
