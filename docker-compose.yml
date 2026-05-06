@@ -4,9 +4,9 @@ services:
     container_name: plex-media-server
     hostname: plex-media-server
     environment:
-      - PLEX_UID=${PUID}
-      - PLEX_GID=${PGID}
-      - TZ=${TIMEZONE}
+      - PLEX_UID=${PUID:-1000}
+      - PLEX_GID=${PGID:-1000}
+      - TZ=${TIMEZONE:-Etc/UTC}
       - PLEX_CLAIM=${PLEX_CLAIM_TOKEN} #Log on your plex account and generate one in plex.tv/claim
     volumes:
       - ${PLEX_CONFIG_FOLDER:-./config}:/config
@@ -23,40 +23,7 @@ services:
       external:
         ipv4_address: ${PLEX_IP}
 
-  scheduler:
-    image: mcuadros/ofelia:0.3
-    container_name: scheduler
-    depends_on:
-      - plextraktsync
-    command: daemon --docker
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      ofelia.job-exec.plextraktsync.schedule: "@every 2h"
-      ofelia.job-exec.plextraktsync.container: "plextraktsync"
-    networks:
-      local:
-
-  plextraktsync:
-    image: ghcr.io/taxel/plextraktsync:latest
-    command: sync
-    container_name: plextraktsync
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TIMEZONE}
-      - PLEX_IP=plex-media-server
-      - PLEX_TOKEN=${PLEX_CLAIM_TOKEN}
-    volumes:
-      - ${PLEXTRAKTSYNC_CONFIG_FOLDER:-./config}:/app/config
-      #- ./plex-trakt-sync/servers.yml:/app/config/servers.yml
-    restart: unless-stopped
-    networks:
-      local:
-
 networks:
-  local:
-    name: plex-local-network
   external:
     external: true
     name: ${EXTERNAL_NETWORK_NAME}
