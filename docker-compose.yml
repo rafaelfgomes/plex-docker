@@ -19,7 +19,6 @@ services:
       - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
     networks:
-      local:
       external:
         ipv4_address: ${PLEX_IP}
 
